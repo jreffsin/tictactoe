@@ -49,6 +49,10 @@ table {
 
 /* End Reset */
 
+:root {
+    --border: 1px solid black;
+}
+
 body {
     display: flex;
     justify-content: center;
@@ -67,15 +71,47 @@ body {
 }
 
 #game_board {
-    border: 1px solid black;
-    height: 600px;
+    /* border: 1px solid black; */
+    /* height: 600px; */
     flex-grow: 1;
-    /* width: 450px; */
     display: grid;
     grid-template-columns: repeat(3, 1fr);
 }
 
 .game_square {
-    border: 1px solid black;
+    border: var(--border);
+    padding-bottom: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
 }
 
+.game_square > img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.game_square:nth-child(1), 
+.game_square:nth-child(3),
+.game_square:nth-child(7),
+.game_square:nth-child(9){
+    border: none;
+}
+
+.game_square:nth-child(2), 
+.game_square:nth-child(8) {
+    border-top: none;
+    border-bottom: none;
+}
+
+.game_square:nth-child(4), 
+.game_square:nth-child(6) {
+    border-left: none;
+    border-right: none;
+}
+
+#x_icon, #o_icon {
+    width: 100px;
+}
