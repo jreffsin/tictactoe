@@ -2,8 +2,9 @@
 
 //global variables
 let active_player = 'x';
+let gameType = 'pvp'
 
-const populateBoard = function () {
+const createBoard = function () {
     const game_board = document.getElementById('game_board');
     for (let i = 0; i < 9; i++){
         let game_square = document.createElement('div');
@@ -13,8 +14,8 @@ const populateBoard = function () {
     }
 };
 
-// adds X to gameboard
-const addX = function (e) {
+// adds marker to gameboard
+const markBoard = function (e) {
     let marker = document.createElement('img');
     if (active_player === 'x'){
         marker.setAttribute('src', 'Assets/x_icon.svg');
@@ -23,27 +24,52 @@ const addX = function (e) {
         marker.setAttribute('src', 'Assets/o_icon.svg');
         active_player = 'x';
     }
-    marker.setAttribute('width', '100px');
     e.target.appendChild(marker);
-    console.log('something');
 };
 
 // add click event to squares to turn them into X
-const addClickListeners = function () {
+const addListeners = function () {
+    //click listeners
     let game_squares = document.querySelectorAll('.game_square');
-
     for (let i = 0; i < game_squares.length; i++){
-        game_squares[i].addEventListener('click', addX);
+        game_squares[i].addEventListener('click', markBoard);
+    };
+
+    //switch listener
+    let game_switch = document.getElementById('game_switch');
+    game_switch.addEventListener('change', switchGame)
+
+};
+
+// switch game between PvP and PvC
+
+const switchGame = function () {
+    let gameLabel = document.getElementById('game_display');
+    let p2Label = document.getElementById('p2_label')
+    if (!(gameType === 'pvp')){
+        gameLabel.innerText = 'Player vs Player';
+        p2Label.innerText = 'Player 2';
+        gameType = 'pvp';
+    } else {
+        gameLabel.innerText = 'Player vs Computer'; 
+        p2Label.innerText = 'Computer';
+        gameType = 'pvc';
     };
 };
 
-// function that determines last placed piece and changes next game piece
-// computer logic
+
+// todo:
+// build out header interface (PvP & PvC)
+// build gameover logic
+// build computer logic
+// make it so markers can't be placed twice in the same square
+// disable gametype switching midgame
 
 
 
 
 
 
-populateBoard();
-addClickListeners();
+
+createBoard();
+addListeners();

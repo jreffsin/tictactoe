@@ -7,14 +7,31 @@
     <link rel="stylesheet" href="style.css">
     <script src="scripts.js" defer></script>
     <title>Tic Tac Toe</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-
-    <div id="board_wrapper">
-
-        <div id="game_board"></div>
-
+    <div id="header">
+        <div id="player1" class="player_wrapper">
+            <p>Player 1</p>
+            <img src="assets/x_icon.svg" class="player_icon">
+        </div>
+        <div id="game_selector">
+            <label class="switch">
+                <input type="checkbox" id="game_switch">
+                <span class="slider round"></span>
+            </label>
+            <div id="game_display">Player vs Player</div>
+        </div>
+        <div id="player2" class="player_wrapper">
+            <p id="p2_label">Player 2</p>
+            <img src="assets/o_icon.svg" class="player_icon">
+        </div>
     </div>
-    
+    <div id="board_wrapper">
+        <div id="game_board"></div>
+    </div>
 </body>
 </html>
