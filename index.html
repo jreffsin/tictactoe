@@ -18,13 +18,15 @@
             <p>Player 1</p>
             <img src="assets/x_icon.svg" class="player_icon">
         </div>
+
         <div id="game_selector">
-            <label class="switch">
-                <input type="checkbox" id="game_switch">
-                <span class="slider round"></span>
-            </label>
-            <div id="game_display">Player vs Player</div>
+            <input type = 'radio' name="opponent_select" id="select_pvp" checked="checked">
+            <label for = "select_pvp">Player vs Player</label>
+            <input type = 'radio' name="opponent_select" id="select_pvc">
+            <label for = "select_pvc">Player vs Computer</label>
+            <button id="newgame_btn">New Game</button>
         </div>
+
         <div id="player2" class="player_wrapper">
             <p id="p2_label">Player 2</p>
             <img src="assets/o_icon.svg" class="player_icon">

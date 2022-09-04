@@ -1,5 +1,3 @@
-//next step: make gameboard responsive while maintaining aspect ratio
-
 //global variables
 let active_player = 'x';
 let gameType = 'pvp'
@@ -36,22 +34,20 @@ const addListeners = function () {
     };
 
     //switch listener
-    let game_switch = document.getElementById('game_switch');
-    game_switch.addEventListener('change', switchGame)
+    let newGameBtn = document.getElementById('newgame_btn');
+    newGameBtn.addEventListener('click', switchGame)
 
 };
 
 // switch game between PvP and PvC
 
 const switchGame = function () {
-    let gameLabel = document.getElementById('game_display');
+    let radio_pvp = document.querySelector('#select_pvp');
     let p2Label = document.getElementById('p2_label')
-    if (!(gameType === 'pvp')){
-        gameLabel.innerText = 'Player vs Player';
+    if (radio_pvp.checked) {
         p2Label.innerText = 'Player 2';
         gameType = 'pvp';
     } else {
-        gameLabel.innerText = 'Player vs Computer'; 
         p2Label.innerText = 'Computer';
         gameType = 'pvc';
     };
@@ -60,6 +56,7 @@ const switchGame = function () {
 
 // todo:
 // build out header interface (PvP & PvC)
+// check for winner
 // build gameover logic
 // build computer logic
 // make it so markers can't be placed twice in the same square

@@ -147,7 +147,7 @@ body {
     height: 35px;
     width: 115px;
     padding: 10px;
-    background-color: blue;
+    background-color: white;
     border-radius: 10px;
     grid-template-columns: 75px 25px;
 }
