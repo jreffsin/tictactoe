@@ -63,17 +63,17 @@ body {
     font-weight: 400;
 }
 
-#board_wrapper {
-    display: flex;
+#game_board {
+    display: grid;
+    grid-template-columns: 1fr;
     width: 500px;
     justify-content: center;
     align-items: center;
-    flex-grow: 1;
     margin: 0 20px;
     padding-top: 30px;
 }
 
-#game_board {
+.game_row {
     flex-grow: 1;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -96,7 +96,7 @@ body {
 }
 
 @media screen and (max-width: 600px) {
-    #board_wrapper {
+    #game_board {
         width: 80vw;
     }
 
@@ -105,21 +105,16 @@ body {
     }
 }
 
-.game_square:nth-child(1), 
-.game_square:nth-child(3),
-.game_square:nth-child(7),
-.game_square:nth-child(9){
+#square0, #square2, #square6, #square8 {
     border: none;
 }
 
-.game_square:nth-child(2), 
-.game_square:nth-child(8) {
+#square1, #square7 {
     border-top: none;
     border-bottom: none;
 }
 
-.game_square:nth-child(4), 
-.game_square:nth-child(6) {
+#square3, #square5 {
     border-left: none;
     border-right: none;
 }
@@ -160,85 +155,18 @@ body {
     margin-right: 10px;
 }
 
-/* SWITCH STYLING BELOW */
+#game_selector {
+display: flex;
+align-items: center;
+}
 
-/* The switch - the box around the slider */
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-  }
-  
-  /* Hide default HTML checkbox */
-  .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-  
-  /* The slider */
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #2196F3;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
-  
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
-  
-  input:checked + .slider {
-    background-color: #2196F3;
-  }
-  
-  input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
-  }
-  
-  input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
-  }
-  
-  /* Rounded sliders */
-  .slider.round {
-    border-radius: 34px;
-  }
-  
-  .slider.round:before {
-    border-radius: 50%;
-  }
-
-  /* SWITCH STYLING ABOVE */
-
-  #game_selector {
-    display: flex;
-    align-items: center;
-  }
-
-  #game_display {
-    background-color: white;
-    width: 160px;
-    height: 34px;
-    border-radius: 5px;
-    margin-left: 10px;
-    display: flex;
-    align-items: center;
-    padding-left: 10px;
-  }
+#game_display {
+background-color: white;
+width: 160px;
+height: 34px;
+border-radius: 5px;
+margin-left: 10px;
+display: flex;
+align-items: center;
+padding-left: 10px;
+}
