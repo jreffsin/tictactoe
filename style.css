@@ -70,13 +70,15 @@ body {
     justify-content: center;
     align-items: center;
     margin: 0 20px;
-    padding-top: 30px;
+    margin-top: 30px;
+    position: relative;
 }
 
 .game_row {
     flex-grow: 1;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    position: relative;
 }
 
 .game_square {
@@ -169,4 +171,48 @@ margin-left: 10px;
 display: flex;
 align-items: center;
 padding-left: 10px;
+}
+
+.diagonalLeftBot {
+    position: absolute;
+    border-top: 4px solid red;
+    width: 707px;
+    bottom: 0%;
+    left: 0%;
+    transform: rotate(315deg);
+    transform-origin: 0% 0%;
+    z-index: 1;
+}
+
+.diagonalLeftTop {
+    position: absolute;
+    border-top: 4px solid red;
+    width: 707px;
+    top: 0%;
+    left: 0%;
+    transform: rotate(45deg);
+    transform-origin: 0% 0%;
+    z-index: 1;
+}
+
+.horizontalLine {
+    position: absolute;
+    border-top: 4px solid red;
+    width: 500px;
+    top: 50%;
+    left: 100%;
+    transform: rotate(180deg);
+    transform-origin: 0% 0%;
+    z-index: 1;
+}
+
+.verticalLine {
+    position: absolute;
+    border-top: 4px solid red;
+    width: 500px;
+    top: 0%;
+    left: 51%;
+    transform: rotate(90deg);
+    transform-origin: 0% 0%;
+    z-index: 1;
 }

@@ -60,13 +60,38 @@ let gameBoard = function () {
         boardArray[i] = new Array(3);
     };
 
+    const drawDiagonalLine = function (leftStart) {
+            if (leftStart === 'bot'){
+                let diagBotLeftTopRight = document.createElement('div');
+                diagBotLeftTopRight.classList.add('diagonalLeftBot');
+                document.getElementById('game_board').appendChild(diagBotLeftTopRight);
+            } else {
+                let diagBotLeftTopRight = document.createElement('div');
+                diagBotLeftTopRight.classList.add('diagonalLeftTop');
+                document.getElementById('game_board').appendChild(diagBotLeftTopRight);
+            }
+    };
+    
+    const drawHorizontalLine = function (i) {
+        let horizontalLine = document.createElement('div');
+        horizontalLine.classList.add('horizontalLine');
+        document.getElementById(`row${i}`).appendChild(horizontalLine);
+    }
+
+    const drawVerticalLine = function (i) {
+        let verticalLine = document.createElement('div');
+        verticalLine.classList.add('verticalLine');
+        document.getElementById(`square${i}`).appendChild(verticalLine);
+    }
+
+
     const checkWinner = function () {
         //check horizontal winner
         for (let i = 0; i < 3; i++){
             if (boardArray[i][0] === active_player && 
                 boardArray[i][1] === active_player &&
                 boardArray[i][2] === active_player){
-                console.log(`${active_player} wins in row ${i}`);
+                drawHorizontalLine(i);
             }
         }
         
@@ -75,7 +100,7 @@ let gameBoard = function () {
             if (boardArray[0][i] === active_player && 
                 boardArray[1][i] === active_player &&
                 boardArray[2][i] === active_player){
-                console.log(`${active_player} wins in column ${i}`);
+                drawVerticalLine(i);
             }
         }
 
@@ -83,14 +108,14 @@ let gameBoard = function () {
         if (boardArray[0][0] === active_player && 
             boardArray[1][1] === active_player &&
             boardArray[2][2] === active_player){
-            console.log(`${active_player} wins in diagonal top left to bot right`);
+            drawDiagonalLine('top');
         }
 
         //check top right to bottom left diagonal winner
         if (boardArray[2][0] === active_player && 
             boardArray[1][1] === active_player &&
             boardArray[0][2] === active_player){
-            console.log(`${active_player} wins in diagonal bot left to top right`);
+            drawDiagonalLine('bot');
         }
     };
 
@@ -127,10 +152,10 @@ let gameBoard = function () {
 
 
 // todo:
-// build out header interface (PvP & PvC)
-// build out objects for each square (adjacent squares and direction)
-// check for winner
 // build gameover logic
+// Call out winner and end game in check winner function
+
+// build out header interface (PvP & PvC)
 // build computer logic
 // make it so markers can't be placed twice in the same square
 // disable gametype switching midgame
