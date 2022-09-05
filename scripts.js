@@ -3,7 +3,7 @@ let active_player = 'x';
 let gameType = 'pvp'
 
 const createBoard = function () {
-    const game_board = document.getElementById('game_board');
+    const boardWrapper = document.getElementById('game_board');
     for (let j = 0; j < 3; j++){
         let k = 3 * j;
         let game_row = document.createElement('div');
@@ -17,30 +17,8 @@ const createBoard = function () {
             game_row.appendChild(game_square);
         }
 
-        game_board.appendChild(game_row);
+        boardWrapper.appendChild(game_row);
     }
-};
-
-// adds marker to gameboard
-const markBoard = function (e) {
-    let marker = document.createElement('img');
-    if (active_player === 'x'){
-        marker.setAttribute('src', 'Assets/x_icon.svg');
-        active_player = 'o';
-
-        //testing something here
-        let brett = [...e.target.parentElement.children].indexOf(e.target);
-        console.log(brett);
-
-    } else {
-        marker.setAttribute('src', 'Assets/o_icon.svg');
-        active_player = 'x';
-
-        //testing something here
-        let brett = [...e.target.parentElement.children].indexOf(e.target);
-        console.log(brett);
-    }
-    e.target.appendChild(marker);
 };
 
 // add click event to squares to turn them into X
@@ -48,7 +26,7 @@ const addListeners = function () {
     //click listeners
     let game_squares = document.querySelectorAll('.game_square');
     for (let i = 0; i < game_squares.length; i++){
-        game_squares[i].addEventListener('click', markBoard);
+        game_squares[i].addEventListener('click', gameBoard.markBoard);
     };
 
     //switch listener
@@ -72,26 +50,80 @@ const switchGame = function () {
 };
 
 //building out module to map gameboard (not currently working 9/4)
-let boardArray = new Array(3);
+let gameBoard = function () {
+    //init variables
+    let marker = '';
+    let colIndex = '';
+    let rowIndex = '';
+    let boardArray = new Array(3);
+    for (let i = 0; i < boardArray.length; i++) {
+        boardArray[i] = new Array(3);
+    };
 
-for (let i = 0; i < boardArray.length; i++) {
-    boardArray[i] = new Array(3);
-};
+    const checkWinner = function () {
+        //check horizontal winner
+        for (let i = 0; i < 3; i++){
+            if (boardArray[i][0] === active_player && 
+                boardArray[i][1] === active_player &&
+                boardArray[i][2] === active_player){
+                console.log(`${active_player} wins in row ${i}`);
+            }
+        }
+        
+        //check vertical winner
+        for (let i = 0; i < 3; i++){
+            if (boardArray[0][i] === active_player && 
+                boardArray[1][i] === active_player &&
+                boardArray[2][i] === active_player){
+                console.log(`${active_player} wins in column ${i}`);
+            }
+        }
 
-//working on building out board array
-//I can index the divs of the gameboard elements from the codes snippets at 22-24 & 30-32
+        //check top left to bottom right diagonal winner
+        if (boardArray[0][0] === active_player && 
+            boardArray[1][1] === active_player &&
+            boardArray[2][2] === active_player){
+            console.log(`${active_player} wins in diagonal top left to bot right`);
+        }
 
-//but I want to make the divs into two dimensional arrays which probably means that I need to
-//rework how I create the divs in the create board function (need 3 rows of 3 divs each I think)
+        //check top right to bottom left diagonal winner
+        if (boardArray[2][0] === active_player && 
+            boardArray[1][1] === active_player &&
+            boardArray[0][2] === active_player){
+            console.log(`${active_player} wins in diagonal bot left to top right`);
+        }
+    };
 
-//this rework would also require redoing some css
+    const markBoard = function (e) {
+        marker = document.createElement('img');
+        if (active_player === 'x'){
+            //marking piece in dom
+            marker.setAttribute('src', 'Assets/x_icon.svg');
+    
+            //marking piece in board array
+            colIndex = [...e.target.parentElement.children].indexOf(e.target);
+            rowIndex = [...e.target.parentElement.parentElement.children].indexOf(e.target.parentElement);
+            boardArray[rowIndex][colIndex] = active_player;
+            checkWinner();
+            active_player = 'o';
+        } else {
+            //marking piece in dom
+            marker.setAttribute('src', 'Assets/o_icon.svg');
 
-//ultimate goal would be for the function to be able to get exact coordinates for the row and column
-//just from pulling index of the div elements
-//then I can use those two indeces to loop through a board array and check for winners
-//accross rows, columns, and diagonals
+            //marking piece in board array
+            colIndex = [...e.target.parentElement.children].indexOf(e.target);
+            rowIndex = [...e.target.parentElement.parentElement.children].indexOf(e.target.parentElement);
+            boardArray[rowIndex][colIndex] = active_player;
+            checkWinner();
+            active_player = 'x';
+        }
+        e.target.appendChild(marker);
+    };
 
-//lot of work but it's a better way to set it up I think and keeps things more general
+    return {
+        markBoard
+    };
+}();
 
 
 // todo:
