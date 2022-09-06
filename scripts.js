@@ -21,19 +21,26 @@ const createBoard = function () {
     }
 };
 
-// add click event to squares to turn them into X
-const addListeners = function () {
+const listeners = function () {
     //click listeners
-    let game_squares = document.querySelectorAll('.game_square');
-    for (let i = 0; i < game_squares.length; i++){
-        game_squares[i].addEventListener('click', gameBoard.markBoard);
+    const addGameSquareListeners = function () {
+        let game_squares = document.querySelectorAll('.game_square');
+        for (let i = 0; i < game_squares.length; i++){
+            game_squares[i].addEventListener('click', gameBoard.markBoard);
+        };
     };
 
     //newgame listener
-    let newGameBtn = document.getElementById('newgame_btn');
-    newGameBtn.addEventListener('click', newGame)
+    const addNewBtnListener = function () {
+        let newGameBtn = document.getElementById('newgame_btn');
+        newGameBtn.addEventListener('click', newGame)
+    };
 
-};
+    return {
+        addGameSquareListeners,
+        addNewBtnListener
+    }
+} ();
 
 const newGame = function () {
     let radio_pvp = document.querySelector('#select_pvp');
@@ -47,35 +54,20 @@ const newGame = function () {
     };
 
     //remove markers 
-    const clearBoard = function () {
-        //remove winner lines
-        if (document.querySelector('.diagonalLeftTop')){
-            const drawnLine = document.getElementsByClassName('diagonalLeftTop');
-            drawnLine[0].parentNode.removeChild(drawnLine[0]);
-        } else if (document.querySelector('.diagonalLeftBot')) {
-            const drawnLine = document.getElementsByClassName('diagonalLeftBot');
-            drawnLine[0].parentNode.removeChild(drawnLine[0]);
-        } else if (document.querySelector('.horizontalLine')) {
-            const drawnLine = document.getElementsByClassName('horizontalLine');
-            drawnLine[0].parentNode.removeChild(drawnLine[0]);
-        } else if (document.querySelector('.verticalLine')) {
-            const drawnLine = document.getElementsByClassName('verticalLine');
-            drawnLine[0].parentNode.removeChild(drawnLine[0]);
-        }
+    gameBoard.clearBoard();
 
-        //remove markers
-        let listOfGameSquares = document.getElementsByClassName('game_square');
-        for (let i = 0; i < listOfGameSquares.length; i++) {
-            if (listOfGameSquares[i].hasChildNodes()) {
-                listOfGameSquares[i].removeChild(listOfGameSquares[i].lastChild);
-            };
-        };
-        //need to also clear board array here
+    listeners.addGameSquareListeners();
+
+    //remove highlight from winner
+    if (active_player === 'o') {
+        document.getElementById('player1').classList.remove('win_border');
+    } else {
+        document.getElementById('player2').classList.remove('win_border');
     };
 
-    clearBoard();
     //remove winner highlight
     //add listeners back to squares
+    active_player = 'x'
 };
 
 //gameboard object
@@ -196,10 +188,48 @@ let gameBoard = function () {
             active_player = 'x';
         }
         e.target.appendChild(marker);
+
+        //need to remove listener from marked square in dom
+    };
+
+    const clearBoard = function () {
+        //remove winner lines
+        if (document.querySelector('.diagonalLeftTop')){
+            const drawnLine = document.getElementsByClassName('diagonalLeftTop');
+            drawnLine[0].parentNode.removeChild(drawnLine[0]);
+        } else if (document.querySelector('.diagonalLeftBot')) {
+            const drawnLine = document.getElementsByClassName('diagonalLeftBot');
+            drawnLine[0].parentNode.removeChild(drawnLine[0]);
+        } else if (document.querySelector('.horizontalLine')) {
+            const drawnLine = document.getElementsByClassName('horizontalLine');
+            drawnLine[0].parentNode.removeChild(drawnLine[0]);
+        } else if (document.querySelector('.verticalLine')) {
+            const drawnLine = document.getElementsByClassName('verticalLine');
+            drawnLine[0].parentNode.removeChild(drawnLine[0]);
+        }
+
+        //remove markers from dom
+        let listOfGameSquares = document.getElementsByClassName('game_square');
+        for (let i = 0; i < listOfGameSquares.length; i++) {
+            if (listOfGameSquares[i].hasChildNodes()) {
+                listOfGameSquares[i].removeChild(listOfGameSquares[i].lastChild);
+            };
+        };
+
+        //remove markers from boardArray
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++){
+                boardArray[i][j] = '';
+            };
+        };
+
+        //remove listeners from all game squares
+        removeGameSquareListeners();
     };
 
     return {
-        markBoard
+        markBoard,
+        clearBoard
     };
 }();
 
@@ -222,4 +252,5 @@ let gameBoard = function () {
 
 
 createBoard();
-addListeners();
+listeners.addGameSquareListeners();
+listeners.addNewBtnListener();
