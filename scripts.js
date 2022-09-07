@@ -1,6 +1,7 @@
 //global variables
 let active_player = 'x';
 let gameType = 'pvp'
+let compTurn = 0;
 
 const createBoard = function () {
     const boardWrapper = document.getElementById('game_board');
@@ -56,6 +57,7 @@ const newGame = function () {
     //remove markers 
     gameBoard.clearBoard();
 
+    //add listeners back to squares
     listeners.addGameSquareListeners();
 
     //remove highlight from winner
@@ -65,21 +67,36 @@ const newGame = function () {
         document.getElementById('player2').classList.remove('win_border');
     };
 
-    //remove winner highlight
-    //add listeners back to squares
+    //reset globals
     active_player = 'x'
+    compTurn = 0;
 };
 
-//gameboard object
 let gameBoard = function () {
     //init variables
     let marker = '';
     let colIndex = '';
     let rowIndex = '';
-    let boardArray = new Array(3);
-    for (let i = 0; i < boardArray.length; i++) {
-        boardArray[i] = new Array(3);
-    };
+    let boardArray = [];
+
+    boardArray = new Array(3);
+        for (let i = 0; i < 3; i++) {
+            boardArray[i] = new Array(3);
+            for (let j = 0; j < 3; j++){
+                boardArray[i][j] = '-'
+            }
+        }
+
+    // const initBoardArray = function () {
+    //     boardArray = new Array(3);
+    //     for (let i = 0; i < 3; i++) {
+    //         boardArray[i] = new Array(3);
+    //         for (let j = 0; j < 3; j++){
+    //             boardArray[i][j] = '-'
+    //         }
+    //     };
+    //     console.log(boardArray);
+    // };
 
     const drawDiagonalLine = function (leftStart) {
             if (leftStart === 'bot'){
@@ -120,7 +137,6 @@ let gameBoard = function () {
             };
     }
 
-
     const checkWinner = function () {
         //check horizontal winner
         for (let i = 0; i < 3; i++){
@@ -130,7 +146,6 @@ let gameBoard = function () {
                 removeGameSquareListeners();
                 drawHorizontalLine(i);
                 highlightWinner();
-
             }
         }
         
@@ -164,6 +179,12 @@ let gameBoard = function () {
         }
     };
 
+    const takeCompTurn = function () {
+        if (gameType === 'pvc') {
+            computerPlayer.takeTurn();
+        };
+    };
+
     const markBoard = function (e) {
         marker = document.createElement('img');
         if (active_player === 'x'){
@@ -173,9 +194,12 @@ let gameBoard = function () {
             //marking piece in board array
             colIndex = [...e.target.parentElement.children].indexOf(e.target);
             rowIndex = [...e.target.parentElement.parentElement.children].indexOf(e.target.parentElement);
-            boardArray[rowIndex][colIndex] = active_player;
+            boardArray[rowIndex][colIndex] = 'x';
+            console.log(boardArray);
+            console.log(boardArray[1][1])
             checkWinner();
             active_player = 'o';
+            compTurn++;
         } else {
             //marking piece in dom
             marker.setAttribute('src', 'Assets/o_icon.svg');
@@ -183,11 +207,12 @@ let gameBoard = function () {
             //marking piece in board array
             colIndex = [...e.target.parentElement.children].indexOf(e.target);
             rowIndex = [...e.target.parentElement.parentElement.children].indexOf(e.target.parentElement);
-            boardArray[rowIndex][colIndex] = active_player;
+            boardArray[rowIndex][colIndex] = 'o';
             checkWinner();
             active_player = 'x';
         }
         e.target.appendChild(marker);
+        takeCompTurn();
 
         //need to remove listener from marked square in dom
     };
@@ -217,11 +242,14 @@ let gameBoard = function () {
         };
 
         //remove markers from boardArray
+        // initBoardArray();
+        boardArray = new Array(3);
         for (let i = 0; i < 3; i++) {
+            boardArray[i] = new Array(3);
             for (let j = 0; j < 3; j++){
-                boardArray[i][j] = '';
-            };
-        };
+                boardArray[i][j] = '-'
+            }
+        }
 
         //remove listeners from all game squares
         removeGameSquareListeners();
@@ -229,13 +257,99 @@ let gameBoard = function () {
 
     return {
         markBoard,
-        clearBoard
+        clearBoard,
+        checkWinner,
+        boardArray,
+        // initBoardArray
     };
 }();
 
+let computerPlayer = function () {
+
+    let markCompMove = function (x, y) {
+        //mark dom
+        let marker = document.createElement('img');
+        marker.setAttribute('src', 'Assets/o_icon.svg');
+        document.querySelector(`#row${x} :nth-child(${y + 1})`).appendChild(marker);
+
+        console.log(gameBoard.boardArray)
+        gameBoard.boardArray[x][y] = 'o';
+        console.log(gameBoard.boardArray)
+        gameBoard.checkWinner();
+        active_player = 'x';
+    }
+
+    let checkBlock = function () {
+        let blockChecker = '';
+        //check horizontal winner
+        // for (let i = 0; i < 3; i++){
+        //     if (gameBoard.boardArray[i][1] === 'x') {
+        //         if (gameBoard.boardArray[i][0] === 'x' &&
+        //             gameBoard.boardArray[i][2] !== 'x'){
+        //                 markCompMove(i,2);
+        //                 break;
+        //         } 
+        //         else if (gameBoard.boardArray[i][2] === 'x' &&
+        //                 gameBoard.boardArray[i][0] !== 'x'){
+        //                     markCompMove(i,0);
+        //                     break;
+        //         }
+        //     }        
+        // }
+
+        for (let i = 0; i < 3; i++){
+            blockChecker = gameBoard.boardArray[i][0] + gameBoard.boardArray[i][1] + gameBoard.boardArray[i][2];
+            console.log(blockChecker);
+            console.log(gameBoard.boardArray);
+        } 
+
+        //check vertical winner
+        // for (let i = 0; i < 3; i++){
+        //     if (gameBoard.boardArray[1][i] === 'x') {
+        //         if (gameBoard.boardArray[0][i] === 'x' &&
+        //             gameBoard.boardArray[2][i] !== 'x'){
+        //                 markCompMove(2,i);
+        //                 break;
+        //         } 
+        //         else if (gameBoard.boardArray[2][i] === 'x' &&
+        //                 gameBoard.boardArray[0][i] !== 'x'){
+        //                     markCompMove(0,i);
+        //                     break;
+        //         }
+        //     }        
+        // }
+
+    }
+
+    let takeTurn = function () {
+
+        // turn 1
+        if (compTurn === 1) {
+
+            // player 1 non-center start
+            console.log(gameBoard.boardArray[1][1])
+            console.log(gameBoard.boardArray)
+            if (gameBoard.boardArray[1][1] != 'x'){
+                markCompMove(1,1);
+            } else {
+                markCompMove(0,0); 
+            }
+        }
+
+        // turn 2
+        if (compTurn === 2) {
+            checkBlock();
+        }
+    };
+
+    return {
+        takeTurn
+    }
+} ();
+
 
 // todo:
-// make clear markers function also clear board array as well
+// check block func
 
 // build gameover logic
 // Call out winner and end game in check winner function
@@ -252,5 +366,6 @@ let gameBoard = function () {
 
 
 createBoard();
+// gameBoard.initBoardArray();
 listeners.addGameSquareListeners();
 listeners.addNewBtnListener();
