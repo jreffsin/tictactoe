@@ -131,6 +131,8 @@ let gameBoard = function () {
     }
 
     const checkWinner = function () {
+        let gameNotOver = true;
+
         //check horizontal winner
         for (let i = 0; i < 3; i++){
             if (boardArray[i][0] === active_player && 
@@ -139,6 +141,7 @@ let gameBoard = function () {
                 removeGameSquareListeners();
                 drawHorizontalLine(i);
                 highlightWinner();
+                gameNotOver = false;
             }
         }
         
@@ -150,6 +153,7 @@ let gameBoard = function () {
                 removeGameSquareListeners();
                 drawVerticalLine(i);
                 highlightWinner();
+                gameNotOver = false;
             }
         }
 
@@ -160,6 +164,7 @@ let gameBoard = function () {
             removeGameSquareListeners();
             drawDiagonalLine('top');
             highlightWinner();
+            gameNotOver = false;
         }
 
         //check top right to bottom left diagonal winner
@@ -169,7 +174,22 @@ let gameBoard = function () {
             removeGameSquareListeners();
             drawDiagonalLine('bot');
             highlightWinner();
+            gameNotOver = false;
         }
+
+        //check draw
+        let checkForDraw = '';
+        if (gameNotOver) {
+            for (let i = 0; i < 3; i++){
+                for (let j = 0; j < 3; j++){
+                    checkForDraw += boardArray[i][j];
+                }
+            }
+            if (!(checkForDraw.includes('-'))){
+                console.log('draw')
+            }
+        }
+        
     };
 
     const checkCompWin = function () {
@@ -356,6 +376,16 @@ let gameBoard = function () {
         if (blocked == false && compTurn === 2){
             turnTwoCompMoves();
         }
+
+        // on turn 3 if no block exists take edgecase moves
+        if (blocked == false && compTurn === 3){
+            turnThreeCompMoves();
+        }
+
+        // on turn 4 if no block exists take edgecase moves
+        if (blocked == false && compTurn === 4){
+            turnFourCompMoves();
+        }
     };
 
     const turnTwoCompMoves = function () {
@@ -365,23 +395,61 @@ let gameBoard = function () {
 
         // if human has taken opposite corners, take random edge
         if ((boardArray[0][0] == 'x' && boardArray[2][2] == 'x') ||
-                (boardArray[0][2] == 'x' && boardArray[2][0] == 'x')){
+            (boardArray[0][2] == 'x' && boardArray[2][0] == 'x')){
                 let num1 = Math.floor(Math.random() * 4);
                 if (num1 == 0){
                     markCompMove(0,1);
+                    markerNotPlaced = false;
                 } 
                 else if (num1 == 1){
                     markCompMove(1,0);
+                    markerNotPlaced = false;
                 }
                 else if (num1 == 2){
                     markCompMove(1,2);
+                    markerNotPlaced = false;
                 }
                 else {
                     markCompMove(2,1);
+                    markerNotPlaced = false;
                 }
         }
+
+        //stop center and opposite corner placement by human
+        if (markerNotPlaced) {
+            if (boardArray[0][0] != '-' && boardArray[2][2] != '-') {
+                markCompMove(0,2);
+                markerNotPlaced = false;
+            }
+            else if (boardArray[0][2] != '-' && boardArray[2][0] != '-') {
+                markCompMove(2,2);
+                markerNotPlaced = false;
+            }
+        }
+            
+
+        //stop adjacent edge placement fork by human
+        if (markerNotPlaced && boardArray[1][1] == 'o'){
+            if (boardArray[1][0] == 'x' && boardArray[0][1] == 'x'){
+                markCompMove(0,0);
+                markerNotPlaced = false;
+            }
+            else if (boardArray[1][0] == 'x' && boardArray[2][1] == 'x'){
+                markCompMove(2,0);
+                markerNotPlaced = false;
+            }
+            else if (boardArray[1][2] == 'x' && boardArray[0][1] == 'x'){
+                markCompMove(0,2);
+                markerNotPlaced = false;
+            }
+            else if (boardArray[2][1] == 'x' && boardArray[1][2] == 'x'){
+                markCompMove(2,2);
+                markerNotPlaced = false;
+            }
+        }
+
         // else if human has taken corner and non-adjacent edge, take edge in empty row or column
-        else {
+        if (markerNotPlaced) {
             let emptyCheck = '';
 
             //if empty row exists place in middle of row
@@ -389,19 +457,20 @@ let gameBoard = function () {
                 for (let j = 0; j < 3; j++){
                     emptyCheck += boardArray[i][j];
                 }
-                if (emptyCheck == 'xox'){
+                if (markerNotPlaced && emptyCheck == 'xox'){
                     let num1 = Math.floor(Math.random() * 2) * 2;
                     let num2 = Math.floor(Math.random() * 2) * 2;
                     markCompMove(2 - num1,2 - num2);
                     markerNotPlaced = false;
                 }
-                else if (emptyCheck == '---'){
+                else if (markerNotPlaced && emptyCheck == '---'){
                     emptyRow = i
                 } 
                 emptyCheck = '';
             }
             if (markerNotPlaced && emptyRow != 3) {
                 markCompMove(emptyRow,1)
+                markerNotPlaced = false;
             }
 
             //if empty column exists place in middle of column
@@ -409,24 +478,54 @@ let gameBoard = function () {
                 for (let j = 0; j < 3; j++){
                     emptyCheck += boardArray[j][i];
                 }
-                if (emptyCheck == 'xox'){
+                if (markerNotPlaced && emptyCheck == 'xox'){
                     let num1 = Math.floor(Math.random() * 2) * 2;
                     let num2 = Math.floor(Math.random() * 2) * 2;
                     markCompMove(2 - num1,2 - num2);
                     markerNotPlaced = false;
                 }
-                else if (emptyCheck == '---'){
+                else if (markerNotPlaced && emptyCheck == '---'){
                     emptyColumn = i
                 } 
                 emptyCheck = '';
             }
             if (markerNotPlaced && emptyColumn != 3) {
                 markCompMove(1,emptyColumn)
+                markerNotPlaced = false;
             }
 
         }
 
     };
+
+    const turnThreeCompMoves = function () {
+
+        //take an open edge
+        if (boardArray[0][1] == '-'){
+            markCompMove(0,1);
+        }
+        else if (boardArray[1][0] == '-'){
+            markCompMove(1,0);
+        }
+        else if (boardArray[2][1] == '-'){
+            markCompMove(2,1);
+        }
+        else {
+            markCompMove(1,2);
+        }
+    };
+
+    const turnFourCompMoves = function () {
+        let markerNotPlaced = true;
+        for (let i = 0; i < 3; i++){
+            for (let j = 0; j < 3; j++){
+                if (markerNotPlaced && boardArray[i][j] == '-'){
+                    markCompMove(i,j);
+                    markerNotPlaced = false;
+                }
+            }
+        }
+    }
 
     const markCompMove = function (x, y) {
         //mark dom
