@@ -13,24 +13,41 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="header">
-        <div id="player1" class="player_wrapper">
-            <p>Player 1</p>
-            <img src="Assets/x_icon.svg" class="player_icon">
+    <div id="game_title">
+        <div>
+            <p id="title_text">Tic Tac Toe</p>
         </div>
+    </div>
+    
+    <div id="header">
+        <div id="player_box">
+            <div id="player1" class="player_wrapper">
+                <p id="p1_label">Player 1</p>
+                <img src="Assets/x_icon.svg" class="player_icon">
+            </div>
+            <div id="player2" class="player_wrapper">
+                <p id="p2_label">Player 2</p>
+                <img src="Assets/o_icon.svg" class="player_icon">
+            </div>
+        </div>
+        
 
         <div id="game_selector">
-            <input type = 'radio' name="opponent_select" id="select_pvp" checked="checked">
-            <label for = "select_pvp">Player vs Player</label>
-            <input type = 'radio' name="opponent_select" id="select_pvc">
-            <label for = "select_pvc">Player vs Computer</label>
+            <div id="pvp_wrapper">
+                <input type = 'radio' name="opponent_select" id="select_pvp" checked="checked">
+                <label for = "select_pvp" id="pvp_label">Human vs Human</label>
+            </div>
+            <div id="pvc_wrapper">
+                <input type = 'radio' name="opponent_select" id="select_pvc">
+                <label for = "select_pvc" id="pvc_label">Human vs Computer</label>
+            </div>
             <button id="newgame_btn">New Game</button>
         </div>
 
-        <div id="player2" class="player_wrapper">
-            <p id="p2_label">Player 2</p>
-            <img src="Assets/o_icon.svg" class="player_icon">
+        <div id="text_wrapper">
+            <p id="text_field">Player one's turn! Click board to place piece.</p>
         </div>
+        
     </div>
     <div id="game_board"></div>
 </body>

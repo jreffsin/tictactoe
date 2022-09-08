@@ -121,57 +121,128 @@ body {
     border-right: none;
 }
 
+#game_title {
+    width: 80vw;
+    height: 40px;
+    background-color: rgb(226, 91, 91);
+    display: flex;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+#game_title > div {
+    background-color: white;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    border-radius: 10px;
+}
+
+#title_text {
+    font-size: 45px;
+}
+
 #header {
     width: 80vw;
     height: 80px;
-    background-color: red;
+    background-color: rgb(226, 91, 91);
     display: flex;
-    justify-content: space-between;
+    justify-content: star;
+    gap: 10px;
     align-items: center;
     border-radius: 10px;
     padding: 10px;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 .player_icon {
-    width: 30px;
+    width: 20px;
     margin-left: 10px;
 }
 
 .player_wrapper {
     display: grid;
     align-items: center;
-    height: 65px;
+    height: 35px;
     width: 135px;
-    padding: 10px;
+    padding: 0 10px;
     background-color: white;
     border-radius: 10px;
     grid-template-columns: 75px 25px;
     box-sizing: border-box;
 }
 
+#player_box {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+#pvc_label {
+    border-radius: 5px;
+    padding: 3px 5px;
+}
+
+#pvp_label {
+    border-radius: 5px;
+    padding: 3px 5px;
+    background-color: rgb(16, 140, 181);
+    color: white;
+}
+
 #player1 {
-    margin-left: 10px;
+    /* margin-left: 10px; */
 }
 
 #player2 {
-    margin-right: 10px;
+    /* margin-right: 10px; */
+}
+
+#newgame_btn {
+    border-radius: 7px;
+    width: 185px;
 }
 
 #game_selector {
-display: flex;
-align-items: center;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    background-color: white;
+    border-radius: 10px;
+    padding: 5px 7px;
 }
 
 #game_display {
-background-color: white;
-width: 160px;
-height: 34px;
-border-radius: 5px;
-margin-left: 10px;
-display: flex;
-align-items: center;
-padding-left: 10px;
+    background-color: white;
+    width: 160px;
+    height: 34px;
+    border-radius: 5px;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+}
+
+#text_wrapper {
+    background-color: white;
+    height: 85px;
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    border-radius: 7px;
+}
+
+#text_wrapper > p {
+    font-size: 2vw;
+    margin: 15px;
+    line-height: 1.2;
 }
 
 .diagonalLeftBot {

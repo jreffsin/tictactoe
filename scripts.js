@@ -46,12 +46,29 @@ const listeners = function () {
 const newGame = function () {
     let radio_pvp = document.querySelector('#select_pvp');
     let p2Label = document.getElementById('p2_label')
+    let p1Label = document.getElementById('p1_label')
+    let pvp_label = document.getElementById('pvp_label')
+    let pvc_label = document.getElementById('pvc_label')
     if (radio_pvp.checked) {
+        p1Label.innerText = 'Player 1';
         p2Label.innerText = 'Player 2';
+        pvp_label.style.backgroundColor = 'rgb(16, 140, 181)';
+        pvp_label.style.color = 'white';
+        pvc_label.style.backgroundColor = 'white';
+        pvc_label.style.color = 'black';
         gameType = 'pvp';
+        let text_field = document.getElementById('text_field');
+        text_field.innerText = "Player one's turn! Click board to place piece."
     } else {
+        p1Label.innerText = 'Human';
         p2Label.innerText = 'Computer';
+        pvc_label.style.backgroundColor = 'rgb(16, 140, 181)';
+        pvc_label.style.color = 'white';
+        pvp_label.style.backgroundColor = 'white';
+        pvp_label.style.color = 'black';
         gameType = 'pvc';
+        let text_field = document.getElementById('text_field');
+        text_field.innerText = " Human's turn! Click board to place piece."
     };
 
     //remove markers 
@@ -142,6 +159,23 @@ let gameBoard = function () {
                 drawHorizontalLine(i);
                 highlightWinner();
                 gameNotOver = false;
+                let text_field = document.getElementById('text_field');
+                if (gameType == 'pvp'){
+                    if (active_player == 'x'){
+                        text_field.innerText = "Player one wins!"
+                    }
+                    else {
+                        text_field.innerText = "Player two wins!"
+                    }
+                }
+                else {
+                    if (active_player == 'x'){
+                        text_field.innerText = "Human wins!"
+                    }
+                    else {
+                        text_field.innerText = "Computer wins!"
+                    }
+                }
             }
         }
         
@@ -154,6 +188,23 @@ let gameBoard = function () {
                 drawVerticalLine(i);
                 highlightWinner();
                 gameNotOver = false;
+                let text_field = document.getElementById('text_field');
+                if (gameType == 'pvp'){
+                    if (active_player == 'x'){
+                        text_field.innerText = "Player one wins!"
+                    }
+                    else {
+                        text_field.innerText = "Player two wins!"
+                    }
+                }
+                else {
+                    if (active_player == 'x'){
+                        text_field.innerText = "Human wins!"
+                    }
+                    else {
+                        text_field.innerText = "Computer wins!"
+                    }
+                }
             }
         }
 
@@ -165,6 +216,23 @@ let gameBoard = function () {
             drawDiagonalLine('top');
             highlightWinner();
             gameNotOver = false;
+            let text_field = document.getElementById('text_field');
+                if (gameType == 'pvp'){
+                    if (active_player == 'x'){
+                        text_field.innerText = "Player one wins!"
+                    }
+                    else {
+                        text_field.innerText = "Player two wins!"
+                    }
+                }
+                else {
+                    if (active_player == 'x'){
+                        text_field.innerText = "Human wins!"
+                    }
+                    else {
+                        text_field.innerText = "Computer wins!"
+                    }
+                }
         }
 
         //check top right to bottom left diagonal winner
@@ -175,6 +243,23 @@ let gameBoard = function () {
             drawDiagonalLine('bot');
             highlightWinner();
             gameNotOver = false;
+            let text_field = document.getElementById('text_field');
+                if (gameType == 'pvp'){
+                    if (active_player == 'x'){
+                        text_field.innerText = "Player one wins!"
+                    }
+                    else {
+                        text_field.innerText = "Player two wins!"
+                    }
+                }
+                else {
+                    if (active_player == 'x'){
+                        text_field.innerText = "Human wins!"
+                    }
+                    else {
+                        text_field.innerText = "Computer wins!"
+                    }
+                }
         }
 
         //check draw
@@ -186,7 +271,8 @@ let gameBoard = function () {
                 }
             }
             if (!(checkForDraw.includes('-'))){
-                console.log('draw')
+                let text_field = document.getElementById('text_field');
+                text_field.innerText = 'Draw!'
             }
         }
         
@@ -640,12 +726,11 @@ listeners.addGameSquareListeners();
 listeners.addNewBtnListener();
 
 // todo:
-// build out turn 3 and turn 4 edge case moves
+// build out header interface (PvP & PvC)
 
 // build gameover logic
 // Call out winner and end game in check winner function
 
-// build out header interface (PvP & PvC)
-// build computer logic
 // make it so markers can't be placed twice in the same square
+// change length of win line to be proportionate to board
 // disable gametype switching midgame
