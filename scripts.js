@@ -674,6 +674,7 @@ let gameBoard = function () {
             //marking piece in board array
             colIndex = [...e.target.parentElement.children].indexOf(e.target);
             rowIndex = [...e.target.parentElement.parentElement.children].indexOf(e.target.parentElement);
+            boardArray[rowIndex][colIndex] = 'o';
             let text_field = document.getElementById('text_field');
             if (gameType === 'pvp') {
                 text_field.innerText = "Player one's turn!"
