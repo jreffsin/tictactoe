@@ -58,7 +58,7 @@ const newGame = function () {
         pvc_label.style.color = 'black';
         gameType = 'pvp';
         let text_field = document.getElementById('text_field');
-        text_field.innerText = "Player one's turn! Click board to place piece."
+        text_field.innerText = "Click board to place player one's piece."
     } else {
         p1Label.innerText = 'Human';
         p2Label.innerText = 'Computer';
@@ -68,7 +68,7 @@ const newGame = function () {
         pvp_label.style.color = 'black';
         gameType = 'pvc';
         let text_field = document.getElementById('text_field');
-        text_field.innerText = " Human's turn! Click board to place piece."
+        text_field.innerText = "Click board to place piece."
     };
 
     //remove markers 
@@ -618,6 +618,7 @@ let gameBoard = function () {
         let marker = document.createElement('img');
         marker.setAttribute('src', 'Assets/o_icon.svg');
         document.querySelector(`#row${x} :nth-child(${y + 1})`).appendChild(marker);
+        document.querySelector(`#row${x} :nth-child(${y + 1})`).removeEventListener('click', markBoard);
 
         //mark move in boardArray
         boardArray[x][y] = 'o';
@@ -657,6 +658,12 @@ let gameBoard = function () {
             colIndex = [...e.target.parentElement.children].indexOf(e.target);
             rowIndex = [...e.target.parentElement.parentElement.children].indexOf(e.target.parentElement);
             boardArray[rowIndex][colIndex] = 'x';
+            let text_field = document.getElementById('text_field');
+            if (gameType === 'pvp') {
+                text_field.innerText = "Player two's turn!"
+            } else {
+                text_field.innerText = "Good luck!"
+            }
             checkWinner();
             active_player = 'o';
             compTurn++;
@@ -667,18 +674,22 @@ let gameBoard = function () {
             //marking piece in board array
             colIndex = [...e.target.parentElement.children].indexOf(e.target);
             rowIndex = [...e.target.parentElement.parentElement.children].indexOf(e.target.parentElement);
-            boardArray[rowIndex][colIndex] = 'o';
+            let text_field = document.getElementById('text_field');
+            if (gameType === 'pvp') {
+                text_field.innerText = "Player one's turn!"
+            } else {
+                text_field.innerText = "Good luck!"
+            }
             checkWinner();
             active_player = 'x';
         }
+        e.target.removeEventListener('click', markBoard);
         e.target.appendChild(marker);
         
         //take computer turn if relevant
         if (gameType === 'pvc') {
             takeCompTurn();
         };
-
-        //need to remove listener from marked square in dom
     };
 
     const clearBoard = function () {
@@ -724,13 +735,3 @@ let gameBoard = function () {
 createBoard();
 listeners.addGameSquareListeners();
 listeners.addNewBtnListener();
-
-// todo:
-// build out header interface (PvP & PvC)
-
-// build gameover logic
-// Call out winner and end game in check winner function
-
-// make it so markers can't be placed twice in the same square
-// change length of win line to be proportionate to board
-// disable gametype switching midgame

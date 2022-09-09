@@ -97,16 +97,6 @@ body {
     width: 80px;
 }
 
-@media screen and (max-width: 600px) {
-    #game_board {
-        width: 80vw;
-    }
-
-    .game_square > img {
-        width: 12vw;
-    }
-}
-
 #square0, #square2, #square6, #square8 {
     border: none;
 }
@@ -195,14 +185,6 @@ body {
     color: white;
 }
 
-#player1 {
-    /* margin-left: 10px; */
-}
-
-#player2 {
-    /* margin-right: 10px; */
-}
-
 #newgame_btn {
     border-radius: 7px;
     width: 185px;
@@ -240,7 +222,7 @@ body {
 }
 
 #text_wrapper > p {
-    font-size: 2vw;
+    font-size: 2.5vw;
     margin: 15px;
     line-height: 1.2;
 }
@@ -292,4 +274,38 @@ body {
 .win_border {
     border: 1px solid green;
     background-color: lightgreen;
+}
+
+@media screen and (max-width: 600px) {
+    #game_board {
+        width: 80vw;
+    }
+
+    .game_square > img {
+        width: 12vw;
+    }
+
+    .horizontalLine {
+        width: 80vw;
+    }
+
+    .verticalLine {
+        width: 80vw;
+    }
+
+    .diagonalLeftTop,
+    .diagonalLeftBot {
+        width: 112vw;
+    }
+
+    #game_title,
+    #header {
+        width: 95vw;
+    }
+
+    #text_wrapper > p {
+        font-size: 3.5vw;
+        margin: 5px;
+        line-height: 1;
+    }
 }
